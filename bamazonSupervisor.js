@@ -42,100 +42,40 @@ connection.connect(function(err) {
           break;
   
         case "Create New Department":
-          checkInventory();
+          createNewDepartment();
           break;
         }
       });
 
   }
 
-  function checkInventory() {
-    var table = new Table({
-        head: ['ITEM ID','QUANTITY'],
-         colWidths: [10, 10] 
-    });
-   
-    var query = "SELECT item_id,stock_quantity FROM products WHERE stock_quantity <= 5";
-    connection.query(query, function(err, res) {
-        for(var i = 0 ; i < res.length ; i ++){
-            table.push([res[i].item_id, res[i].stock_quantity]);
-        }
-        console.log(table.toString());
-        runSearch();
-      }
-    );
-  }
-  
-function addToInventory(item_id,quantity,price){
+function createNewDepartment(){
   inquirer
   .prompt([{
     type: "input",
-    name: "id_item",
-    message: "Which ITEM ID you wish to add inventory??",
-  },
-  {
-    type: "input",
-    name: "quantity",
-    message: "How many ITEMS do you will add?",
-  }
-  ])
-  .then(function(answer) {
-    var query = connection.query(
-      "UPDATE products SET stock_quantity=stock_quantity +"+ answer.quantity+ " WHERE ?",
-      [
-        {
-            item_id: answer.id_item
-        }
-      ],
-      function(err, res) {
-        console.log(answer.item_id + " item updated");
-        runSearch();
-  
-      }
-    );
-
-  });
-}
-
-function addNewProduct(item_id,quantity,price){
-  inquirer
-  .prompt([{
-    type: "input",
-    name: "id_item",
-    message: "Product Id",
-  },
-  {
-    type: "input",
-    name: "product_name",
-    message: "Product Name",
+    name: "department_id",
+    message: "Department Id",
   },
   {
     type: "input",
     name: "department_name",
-    message: "Department name",
+    message: "Department Name",
   },
   {
     type: "input",
-    name: "price",
-    message: "Price",
-  },
-  {
-    type: "input",
-    name: "stock_quantity",
-    message: "stock quantity",
+    name: "over_head_costs",
+    message: "Over head costs",
   }
   ])
   .then(function(answer) {
 
     var post = {
-      item_id: answer.id_item,
-      product_name: answer.product_name,
+      department_id: answer.department_id,
       department_name: answer.department_name,
-      price: answer.price,
-      stock_quantity: answer.stock_quantity
+      over_head_costs: answer.over_head_costs
     }
     var query = connection.query(
-      "INSERT INTO products SET ? ",
+      "INSERT INTO departments SET ? ",
       [
         post
       ],

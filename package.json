@@ -14,5 +14,13 @@
     "mysql": "^2.15.0"
   },
   "devDependencies": {},
-  "description": ""
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/veritosvb/bamazon_app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/veritosvb/bamazon_app/issues"
+  },
+  "homepage": "https://github.com/veritosvb/bamazon_app#readme"
 }
