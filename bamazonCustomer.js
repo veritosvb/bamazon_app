@@ -64,12 +64,13 @@ connection.connect(function(err) {
   }
   
 function purchesing(item_id,quantity,price){
-    var query = connection.query(
-      "UPDATE products SET ? WHERE ?",
+    
+  var query = "UPDATE products SET product_sales= product_sales + " + price + ", ? WHERE ?";
+  connection.query(
+      query,
       [
         {
             stock_quantity: quantity,
-           // product_sales: product_sales + price
 
         },
         {
@@ -83,6 +84,9 @@ function purchesing(item_id,quantity,price){
         //deleteProduct();
       }
     );
+
+
+    
 }
 
 
