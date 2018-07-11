@@ -14,8 +14,10 @@ CREATE TABLE products (
 );
 
 SELECT * FROM products;
+SELECT * FROM departments;
 
-INSERT INTO products(item_id, product_name, department_name, price, stock_quantity) VALUES (1, "ZEST Bar Soap", "Personal Hygine", 34.00, 100);
+
+INSERT INTO products(item_id, product_name, department_name, price, stock_quantity) VALUES (1, "ZEST Bar Soap", "Personal Hygine", 34.00, 100,1);
 INSERT INTO products(item_id, product_name, department_name, price, stock_quantity) VALUES (2, "Ipad Pro", "Electronics", 15334.00, 5);
 INSERT INTO products(item_id, product_name, department_name, price, stock_quantity) VALUES (3, "Febreze Aromatizantes", "Home", 42.02, 35);
 INSERT INTO products(item_id, product_name, department_name, price, stock_quantity) VALUES (4, "Nikon D3400 Kit", "Electronics", 9999.0, 2);
@@ -26,6 +28,8 @@ INSERT INTO products(item_id, product_name, department_name, price, stock_quanti
 INSERT INTO products(item_id, product_name, department_name, price, stock_quantity) VALUES (9, "Servilletas Kleenex class 200 pzas", "Home", 79.00, 30);
 INSERT INTO products(item_id, product_name, department_name, price, stock_quantity) VALUES (10, "Leche Lala 100 reducida en grasa, sin lactosa 1 l", "Food", 21.50, 30);
 
+INSERT INTO products(product_sales) VALUES (1, 30);
+
 
 CREATE TABLE departments (
  department_id INT NOT NULL,
@@ -35,3 +39,15 @@ CREATE TABLE departments (
 
 ALTER TABLE products
 ADD product_sales DECIMAL(10,2);
+ 
+
+INSERT INTO departments(department_id,department_name, over_head_costs) VALUES (1,"Electronics",10000);
+INSERT INTO departments(department_id,department_name, over_head_costs) VALUES (2,"Home",20000);
+INSERT INTO departments(department_id,department_name, over_head_costs) VALUES (3,"Food",50000);
+
+Select departments.department_id,departments.department_name,departments.over_head_costs FROM products INNER JOIN departments ON departments.department_name = products.department_name;
+
+
+
+
+

@@ -69,7 +69,7 @@ function purchesing(item_id,quantity,price){
       [
         {
             stock_quantity: quantity,
-            product_sales: product_sales + price
+           // product_sales: product_sales + price
 
         },
         {
@@ -89,9 +89,6 @@ function purchesing(item_id,quantity,price){
 
   function displayAll() {
 
-
-
- 
     var table = new Table({
       head: ['ITEM ID', 'PRODUCT NAME', 'PRICE']
     , colWidths: [10, 60, 10]});

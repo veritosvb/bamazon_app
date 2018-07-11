@@ -38,74 +38,50 @@ connection.connect(function(err) {
           console.log(answer.action)
         switch (answer.action) {
         case "View Product Sales by Department":
-          displayProductSales();
+        displayProductSales();
           break;
   
         case "Create New Department":
-          createNewDepartment();
+          checkInventory();
           break;
         }
       });
 
   }
 
-function createNewDepartment(){
-  inquirer
-  .prompt([{
-    type: "input",
-    name: "department_id",
-    message: "Department Id",
-  },
-  {
-    type: "input",
-    name: "department_name",
-    message: "Department Name",
-  },
-  {
-    type: "input",
-    name: "over_head_costs",
-    message: "Over head costs",
-  }
-  ])
-  .then(function(answer) {
-
-    var post = {
-      department_id: answer.department_id,
-      department_name: answer.department_name,
-      over_head_costs: answer.over_head_costs
-    }
-    var query = connection.query(
-      "INSERT INTO departments SET ? ",
-      [
-        post
-      ],
-      function(err, res) {
-        console.log(err);
-        console.log("item added");
+  function checkInventory() {
+    var table = new Table({
+        head: ['ITEM ID','QUANTITY'],
+         colWidths: [10, 10] 
+    });
+   
+    var query = "SELECT item_id,stock_quantity FROM products WHERE stock_quantity <= 5";
+    connection.query(query, function(err, res) {
+        for(var i = 0 ; i < res.length ; i ++){
+            table.push([res[i].item_id, res[i].stock_quantity]);
+        }
+        console.log(table.toString());
         runSearch();
-  
       }
     );
+  }
+  
 
-  });
-}
 
-
+  
   function displayProductSales() {
+
     var table = new Table({
       head: ['department_id', 'department_name', 'over_head_costs', 'product_sales',`total_profit`]
-    , colWidths: [10, 20, 10,10,10]});
+    , colWidths: [10, 20,20,15,20]});
 
-    var query = "SELECT department_id,departments.department_name,over_head_costs, SUM(products.product_sales) FROM departments INNER JOIN products ON departments.department_name = products.department_name GROUP BY products.department_name";
+    var query = "Select departments.department_id,departments.department_name,departments.over_head_costs, SUM(products.product_sales) FROM departments INNER JOIN products ON departments.department_name = products.department_name group by products.department_name";
 
     connection.query(query, function(err, res) {
-        if(err)
-        return;
-
       for (var i = 0; i < res.length; i++) {
-       table.push([res[i].department_id,res[i].department_name,res[i].over_head_costs,res[i].product_sales]);
+       table.push([res[i].department_id,res[i].department_name, res[i].over_head_costs,res[i]['SUM(products.product_sales)'],res[i].over_head_costs-res[i]['SUM(products.product_sales)']]);
       }
-      //console.log(table.toString());
+      console.log(table.toString());
       runSearch();
     });
     
